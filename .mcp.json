@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "plan-review": {
+      "command": "node",
+      "args": ["C:/Users/USER/.claude/mcp-servers/plan-review/index.js"],
+      "env": {
+        "GEMINI_API_KEY": "AIzaSyDav7FRgFOBxQ7q6_DsOeL30jnyWwiCZMc"
+      }
+    }
+  }
+}
