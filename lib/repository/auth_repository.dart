@@ -102,7 +102,9 @@ class AuthRepository {
       throw AppException("서버 응답이 올바르지 않습니다.");
 
     } catch (e) {
-      // 에러 파싱 및 전달
+      // AppException은 의도한 메시지가 있으므로 그대로 rethrow
+      if (e is AppException) rethrow;
+      // 기타 에러는 파싱 후 전달
       throw ApiErrorHandler.parse(e);
     }
   }
