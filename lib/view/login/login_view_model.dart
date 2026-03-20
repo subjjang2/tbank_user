@@ -45,13 +45,13 @@ class LoginViewModel extends BaseViewModel<LoginViewState> {
     );
 
     try {
-      // 2. 유효성 검사 (빈 값 체크)
-      if (id.isEmpty || password.isEmpty) {
+      // 2. 유효성 검사 (빈 값 체크, trim 적용)
+      if (id.trim().isEmpty || password.trim().isEmpty) {
         throw AppException("아이디 비밀번호를 모두 입력해주세요.");
       }
 
       // 3. FCM 토큰 가져오기 (푸시 알림 수신용)
-      final token = ref.watch(fcmTokenProvider);
+      final token = ref.read(fcmTokenProvider);
 
       // 4. API 호출 (Repository에게 로그인 요청)
       final result = await ref.read(authRepositoryProvider).login(

@@ -101,8 +101,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
               Button(
                 width: double.infinity,
                 size: ButtonSize.large,
-                text: "로그인",
-                onPressed: () => _onLoginPressed(viewModel, context),
+                text: state.isBusy ? "로그인 중..." : "로그인",
+                onPressed: state.isBusy ? null : () => _onLoginPressed(viewModel, context),
               ),
               const SizedBox(height: 12),
 
