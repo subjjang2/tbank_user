@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tbank_user · AI-Readiness Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #fafafa;
+        --surface: #ffffff;
+        --border: #e5e7eb;
+        --border-strong: #d1d5db;
+        --text: #0f172a;
+        --text-2: #475569;
+        --text-3: #94a3b8;
+        --accent: #2563eb;
+        --accent-soft: #eff6ff;
+        --green: #16a34a;
+        --green-soft: #dcfce7;
+        --amber: #d97706;
+        --amber-soft: #fef3c7;
+        --red: #dc2626;
+        --red-soft: #fee2e2;
+        --grid: #f1f5f9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter",
+          -apple-system,
+          system-ui,
+          "Segoe UI",
+          sans-serif;
+        font-feature-settings: "cv11", "ss01";
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 48px 40px 64px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 32px;
+      }
+
+      .header .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--text-3);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+
+      .header h1 {
+        font-size: 30px;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+
+      .header .sub {
+        font-size: 14px;
+        color: var(--text-2);
+        margin-top: 4px;
+      }
+
+      .header-meta {
+        text-align: right;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-3);
+        line-height: 1.7;
+      }
+
+      .header-meta strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .score-strip {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .score-hero {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 28px 28px 24px;
+      }
+
+      .score-hero .label {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-3);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .score-hero .value {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .score-hero .num {
+        font-size: 64px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        color: var(--text);
+      }
+
+      .score-hero .denom {
+        font-size: 20px;
+        color: var(--text-3);
+        font-weight: 500;
+      }
+
+      .score-hero .grade-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .grade-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .grade-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+      }
+
+      .score-hero .desc {
+        font-size: 13px;
+        color: var(--text-2);
+        line-height: 1.5;
+        margin-top: 10px;
+      }
+
+      .score-hero hr {
+        border: 0;
+        border-top: 1px solid var(--border);
+        margin: 18px 0 14px;
+      }
+
+      .mini-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .mini-stat .k {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-3);
+        margin-bottom: 2px;
+      }
+
+      .mini-stat .v {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .rules {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px 24px 24px;
+      }
+
+      .rules .rules-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .rules h2 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .legend-inline {
+        display: flex;
+        gap: 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-2);
+      }
+
+      .legend-inline span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .legend-inline i {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+      }
+
+      .rule-row {
+        display: grid;
+        grid-template-columns: 28px 1fr 220px 56px;
+        gap: 12px;
+        align-items: center;
+        padding: 7px 0;
+        font-size: 13px;
+      }
+
+      .rule-row + .rule-row {
+        border-top: 1px dashed var(--border);
+      }
+
+      .rule-row .idx {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-3);
+        font-weight: 500;
+      }
+
+      .rule-row .title {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .rule-row .sub {
+        font-size: 11.5px;
+        color: var(--text-3);
+        margin-top: 1px;
+      }
+
+      .rule-row .bar {
+        height: 8px;
+        border-radius: 3px;
+        background: var(--grid);
+        overflow: hidden;
+      }
+
+      .rule-row .bar > span {
+        display: block;
+        height: 100%;
+        border-radius: 3px;
+      }
+
+      .bar-good > span {
+        background: var(--green);
+      }
+      .bar-warn > span {
+        background: var(--amber);
+      }
+      .bar-bad > span {
+        background: var(--red);
+      }
+
+      .rule-row .num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: right;
+        color: var(--text);
+      }
+
+      .map-section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 32px;
+        overflow: hidden;
+      }
+
+      .map-head {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .map-head h2 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .map-head .sub {
+        font-size: 12px;
+        color: var(--text-2);
+        margin-top: 2px;
+      }
+
+      .map-legend {
+        display: flex;
+        gap: 18px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-2);
+        align-items: center;
+      }
+
+      .map-legend > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+      }
+
+      .legend-square {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+      }
+
+      .legend-line {
+        width: 24px;
+        height: 0;
+        border-top: 1.5px solid;
+      }
+
+      .map-body {
+        padding: 28px 24px 32px;
+      }
+
+      .map-body svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .findings {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .panel-head {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .panel-head h3 {
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .panel-head .count {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-3);
+        margin-left: auto;
+      }
+
+      .panel-strength .panel-head {
+        background: var(--green-soft);
+      }
+      .panel-strength .panel-head h3 {
+        color: var(--green);
+      }
+
+      .panel-risk .panel-head {
+        background: var(--red-soft);
+      }
+      .panel-risk .panel-head h3 {
+        color: var(--red);
+      }
+
+      .panel-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .panel-list li {
+        padding: 14px 20px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .panel-list li:first-child {
+        border-top: 0;
+      }
+
+      .panel-list .head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .panel-list .tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10.5px;
+        padding: 2px 7px;
+        border-radius: 3px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+
+      .tag-rule {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .panel-list .note {
+        margin-top: 4px;
+        color: var(--text-2);
+        font-size: 12.5px;
+      }
+
+      .panel-list code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11.5px;
+        background: var(--grid);
+        padding: 1px 5px;
+        border-radius: 3px;
+        color: var(--text);
+      }
+
+      footer {
+        margin-top: 48px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-3);
+        text-align: center;
+      }
+
+      .grid-bg {
+        stroke: var(--grid);
+        stroke-width: 1;
+      }
+
+      .node-card {
+        fill: var(--surface);
+        stroke: var(--border-strong);
+        stroke-width: 1.2;
+      }
+
+      .node-card.accent {
+        stroke: var(--accent);
+      }
+
+      .node-title {
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        fill: var(--text);
+      }
+
+      .node-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        fill: var(--text-3);
+      }
+
+      .node-kpi {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .edge {
+        fill: none;
+        stroke: var(--border-strong);
+        stroke-width: 1.3;
+      }
+
+      .edge-dash {
+        stroke-dasharray: 4 3;
+      }
+
+      .edge-type {
+        stroke: var(--accent);
+        stroke-width: 1.5;
+      }
+
+      .claude-dot {
+        fill: var(--accent);
+      }
+      .claude-ring {
+        fill: var(--accent-soft);
+      }
+
+      .test-dot {
+        fill: var(--green);
+      }
+
+      .warm {
+        fill: var(--amber-soft);
+        stroke: var(--amber);
+        stroke-width: 1;
+      }
+
+      @media (max-width: 960px) {
+        .score-strip,
+        .findings {
+          grid-template-columns: 1fr;
+        }
+        .rule-row {
+          grid-template-columns: 24px 1fr 140px 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- =========== HEADER =========== -->
+      <header class="header">
+        <div>
+          <div class="eyebrow">레포지토리 감사 · AI 준비도 · v2 루브릭</div>
+          <h1>tbank_user — AI 준비도 지도</h1>
+          <div class="sub">
+            7개 카테고리 채점 · 구조 지도 · ROI 우선순위 액션 (Flutter 단일 앱)
+          </div>
+        </div>
+        <div class="header-meta">
+          <div>점수 측정 <strong>2026-06-27</strong></div>
+          <div>브랜치 <strong>feature/work</strong></div>
+          <div>모듈 <strong>3*</strong> · 컨텍스트 파일 <strong>4</strong></div>
+        </div>
+      </header>
+
+      <!-- =========== SCORE STRIP =========== -->
+      <section class="score-strip">
+        <div class="score-hero">
+          <div class="label">AI 준비도 지수</div>
+          <div class="value">
+            <span class="num">63</span><span class="denom">/ 100</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-badge" style="background: var(--amber-soft); color: var(--amber)">
+              <span class="grade-dot" style="background: var(--amber)"></span> AI-Assisted · 에이전트 활용 가능
+            </span>
+          </div>
+          <div class="desc">
+            7개 카테고리 · 가중치 차등 (A 15 · B 20 · C 20 · D 15 · E 15 · F 10 · G 5).
+            <strong>5→63</strong> (AI-Hostile→AI-Assisted, 두 등급 상승). F·G 만점, D 13/15, E 12/15.
+            0점 카테고리 소멸. 남은 상승분 A·B는 <strong>빌드폴더 module 오탐</strong>이 분모를
+            키워 천장 — 코드베이스 자체 한계가 아닌 채점 휴리스틱 한계.
+          </div>
+          <hr />
+          <div class="mini-stats">
+            <div class="mini-stat">
+              <div class="k">컨텍스트 파일</div>
+              <div class="v">12</div>
+            </div>
+            <div class="mini-stat">
+              <div class="k">깨진 경로</div>
+              <div class="v" style="color: var(--green)">0</div>
+            </div>
+            <div class="mini-stat">
+              <div class="k">검증 게이트</div>
+              <div class="v" style="color: var(--green)">CI+hook</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories bar chart -->
+        <div class="rules">
+          <div class="rules-head">
+            <div>
+              <h2>7개 카테고리 — 카테고리별 점수</h2>
+            </div>
+            <div class="legend-inline">
+              <span><i style="background: var(--green)"></i> 75% 이상</span>
+              <span><i style="background: var(--amber)"></i> 50–74%</span>
+              <span><i style="background: var(--red)"></i> 50% 미만</span>
+            </div>
+          </div>
+
+          <div class="rule-row">
+            <div class="idx">A</div>
+            <div>
+              <div class="title">AI 탐색 & 커버리지</div>
+              <div class="sub">
+                <code>lib</code>·<code>test</code>·<code>tool</code> 커버 (3/7)
+                <span style="color: var(--amber)">(*android/ios/macos/scripts 미커버 — 빌드폴더 오탐)</span>
+              </div>
+            </div>
+            <div class="bar bar-bad">
+              <span style="width: 40%"></span>
+            </div>
+            <div class="num">6/15</div>
+          </div>
+
+          <div class="rule-row">
+            <div class="idx">B</div>
+            <div>
+              <div class="title">컨텍스트 문서 품질</div>
+              <div class="sub">
+                모듈 문서로 key files·명령어·cross-link 보강 · non-obvious 마커 추가
+              </div>
+            </div>
+            <div class="bar bar-bad">
+              <span style="width: 35%"></span>
+            </div>
+            <div class="num">7/20</div>
+          </div>
+
+          <div class="rule-row">
+            <div class="idx">C</div>
+            <div>
+              <div class="title">암묵지 외부화</div>
+              <div class="sub">
+                <strong style="color: var(--green)">✓ docs/adr/ 4건 + 모듈문서</strong> · Q1-Q4는 빌드폴더 분모 오탐에 막힘
+              </div>
+            </div>
+            <div class="bar bar-warn">
+              <span style="width: 50%"></span>
+            </div>
+            <div class="num">10/20</div>
+          </div>
+
+          <div class="rule-row">
+            <div class="idx">D</div>
+            <div>
+              <div class="title">모듈 간 의존성 매핑</div>
+              <div class="sub">
+                <strong style="color: var(--green)">✓ ARCHITECTURE.md + mermaid + 모듈별 Dependencies 섹션</strong>
+              </div>
+            </div>
+            <div class="bar bar-good">
+              <span style="width: 87%"></span>
+            </div>
+            <div class="num">13/15</div>
+          </div>
+
+          <div class="rule-row">
+            <div class="idx">E</div>
+            <div>
+              <div class="title">검증 & 품질 게이트</div>
+              <div class="sub">
+                <strong style="color: var(--green)">✓ 깨진경로 0 · CODEOWNERS · PR template · CI · evals</strong>
+              </div>
+            </div>
+            <div class="bar bar-good">
+              <span style="width: 80%"></span>
+            </div>
+            <div class="num">12/15</div>
+          </div>
+
+          <div class="rule-row">
+            <div class="idx">F</div>
+            <div>
+              <div class="title">신선도 & 자가 유지보수</div>
+              <div class="sub">
+                <strong style="color: var(--green)">✓ drift 0% · CI context-check + .claude hook 경로검증</strong>
+              </div>
+            </div>
+            <div class="bar bar-good">
+              <span style="width: 100%"></span>
+            </div>
+            <div class="num">10/10</div>
+          </div>
+
+          <div class="rule-row">
+            <div class="idx">G</div>
+            <div>
+              <div class="title">에이전트 성과 측정</div>
+              <div class="sub">
+                <strong style="color: var(--green)">✓ evals/ + 대표 task 3종 + agent-results.json + session log 방침</strong>
+              </div>
+            </div>
+            <div class="bar bar-good">
+              <span style="width: 100%"></span>
+            </div>
+            <div class="num">5/5</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== MAP =========== -->
+      <section class="map-section">
+        <div class="map-head">
+          <div>
+            <h2>구조 지도 — lib/ (실제 코드베이스)</h2>
+            <div class="sub">
+              노드 = 디렉터리 · 엣지 = 의존성 흐름 · 단일 Flutter 앱, MVVM + Repository
+            </div>
+          </div>
+          <div class="map-legend">
+            <span>
+              <span class="legend-dot" style="background: var(--accent)"></span>
+              CLAUDE.md 보유
+            </span>
+            <span>
+              <span class="legend-square" style="background: var(--amber-soft); border: 1px solid var(--amber)"></span>
+              주의 (오타·혼용)
+            </span>
+            <span>
+              <span class="legend-line" style="border-color: var(--accent)"></span>
+              데이터 흐름
+            </span>
+            <span>
+              <span class="legend-line" style="border-color: var(--border-strong); border-style: dashed"></span>
+              의존성
+            </span>
+          </div>
+        </div>
+
+        <div class="map-body">
+          <svg viewBox="0 0 1180 620" xmlns="http://www.w3.org/2000/svg">
+            <g class="grid-bg">
+              <path d="M0,80 H1180" />
+              <path d="M0,160 H1180" />
+              <path d="M0,240 H1180" />
+              <path d="M0,320 H1180" />
+              <path d="M0,400 H1180" />
+              <path d="M0,480 H1180" />
+              <path d="M0,560 H1180" />
+              <path d="M300,0 V620" />
+              <path d="M600,0 V620" />
+              <path d="M900,0 V620" />
+            </g>
+
+            <!-- Column headers -->
+            <text x="200" y="32" text-anchor="middle" class="node-meta"
+              style="font-size: 11px; fill: var(--text-2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">
+              Presentation · lib/view
+            </text>
+            <text x="590" y="32" text-anchor="middle" class="node-meta"
+              style="font-size: 11px; fill: var(--text-2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">
+              Domain · Data
+            </text>
+            <text x="980" y="32" text-anchor="middle" class="node-meta"
+              style="font-size: 11px; fill: var(--text-2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">
+              Cross-cutting
+            </text>
+
+            <!-- ROOT CLAUDE.md -->
+            <g transform="translate(440,52)">
+              <rect class="node-card accent" width="300" height="70" rx="8" />
+              <circle cx="22" cy="22" r="14" class="claude-ring" />
+              <circle cx="22" cy="22" r="6" class="claude-dot" />
+              <text x="44" y="26" class="node-title">CLAUDE.md (root)</text>
+              <text x="44" y="42" class="node-meta">개요 · 기술스택 · 진입점 · 중복패턴 · 컨벤션</text>
+              <text x="44" y="58" class="node-meta" style="fill: var(--text-2)">77 lines · 유일한 컨텍스트</text>
+              <text x="284" y="26" text-anchor="end" class="node-kpi" style="fill: var(--accent)">루트</text>
+            </g>
+
+            <!-- ===== Column 1: view ===== -->
+            <g transform="translate(60,170)">
+              <rect class="node-card" width="280" height="92" rx="8" />
+              <text x="16" y="24" class="node-title">view/ · base_view*</text>
+              <text x="16" y="40" class="node-meta">MVVM 공통 베이스 (제네릭 래퍼)</text>
+              <text x="16" y="58" class="node-meta">BaseView / BaseViewModel / BaseViewState</text>
+              <text x="16" y="78" class="node-meta" style="fill: var(--text-2)">feature = view + view_model + view_state</text>
+            </g>
+
+            <g transform="translate(60,286)">
+              <rect class="node-card" width="280" height="130" rx="8" />
+              <text x="16" y="24" class="node-title">view/ features (Feature-First)</text>
+              <text x="16" y="40" class="node-meta">login · register · home · transfer · authority</text>
+              <g transform="translate(16,52)">
+                <rect class="warm" width="248" height="18" rx="3" />
+                <text x="8" y="13" class="node-meta" style="fill: var(--amber); font-weight:600">home/my/my_accont_view.dart</text>
+                <text x="240" y="13" text-anchor="end" class="node-meta" style="fill: var(--amber); font-weight:600">오타</text>
+              </g>
+              <g transform="translate(16,74)">
+                <rect class="warm" width="248" height="18" rx="3" />
+                <text x="8" y="13" class="node-meta" style="fill: var(--amber); font-weight:600">transaction_history/transation_*</text>
+                <text x="240" y="13" text-anchor="end" class="node-meta" style="fill: var(--amber); font-weight:600">오타</text>
+              </g>
+              <g transform="translate(16,96)">
+                <rect fill="var(--grid)" width="248" height="18" rx="3" />
+                <text x="8" y="13" class="node-meta" style="fill: var(--text-2)">View / Screen 접미사 혼용</text>
+              </g>
+            </g>
+
+            <g transform="translate(60,440)">
+              <rect class="node-card" width="280" height="64" rx="8" />
+              <text x="16" y="26" class="node-title">provider/ · common/</text>
+              <text x="16" y="44" class="node-meta">전역 Riverpod Provider · navigatorKey · 키 상수</text>
+            </g>
+
+            <!-- ===== Column 2: domain/data ===== -->
+            <g transform="translate(450,170)">
+              <rect class="node-card" width="280" height="92" rx="8" />
+              <text x="16" y="24" class="node-title">repository/</text>
+              <text x="16" y="40" class="node-meta">auth · account · transfer · bank · system</text>
+              <text x="16" y="58" class="node-meta">Dio 호출 · ApiErrorHandler.parse() throw</text>
+              <text x="16" y="78" class="node-meta" style="fill: var(--text-2)">response/ — 일부 freezed</text>
+            </g>
+
+            <g transform="translate(450,286)">
+              <rect class="node-card" width="280" height="92" rx="8" />
+              <text x="16" y="24" class="node-title">service/</text>
+              <text x="16" y="40" class="node-meta">auth · fcm · account · theme</text>
+              <g transform="translate(16,52)">
+                <rect class="warm" width="248" height="18" rx="3" />
+                <text x="8" y="13" class="node-meta" style="fill: var(--amber); font-weight:600">에러반환 bool / String? / void 혼용</text>
+              </g>
+            </g>
+
+            <g transform="translate(450,402)">
+              <rect class="node-card" width="280" height="92" rx="8" />
+              <text x="16" y="24" class="node-title">model/</text>
+              <text x="16" y="40" class="node-meta">User · AccountModel · UserProfileModel</text>
+              <g transform="translate(16,52)">
+                <rect class="warm" width="248" height="18" rx="3" />
+                <text x="8" y="13" class="node-meta" style="fill: var(--amber); font-weight:600">freezed vs 수동 class 혼용</text>
+              </g>
+            </g>
+
+            <!-- ===== Column 3: cross-cutting ===== -->
+            <g transform="translate(840,170)">
+              <rect class="node-card" width="280" height="92" rx="8" />
+              <text x="16" y="24" class="node-title">util/ · util/helper/</text>
+              <text x="16" y="40" class="node-meta">route_path · app_dialog · app_config</text>
+              <text x="16" y="58" class="node-meta">network_helper(dioProvider) · api_error_handler</text>
+              <text x="16" y="78" class="node-meta" style="fill: var(--text-2)">app_exception · formatter</text>
+            </g>
+
+            <g transform="translate(840,286)">
+              <rect class="node-card" width="280" height="92" rx="8" />
+              <text x="16" y="24" class="node-title">theme/ · res/</text>
+              <text x="16" y="40" class="node-meta">button · toast · refresh · foundation</text>
+              <text x="16" y="58" class="node-meta">palette · typo · layout</text>
+            </g>
+
+            <g transform="translate(840,402)">
+              <rect class="node-card" width="280" height="92" rx="8" />
+              <circle cx="24" cy="44" r="10" fill="var(--green-soft)" />
+              <circle cx="24" cy="44" r="5" class="test-dot" />
+              <text x="16" y="24" class="node-title">test/</text>
+              <text x="44" y="48" class="node-meta">widget_test.dart (템플릿 1건)</text>
+            </g>
+
+            <!-- docs/.dev (new) -->
+            <g transform="translate(840,512)">
+              <rect class="node-card accent" width="280" height="64" rx="8" stroke-dasharray="4 3" />
+              <text x="16" y="26" class="node-title">docs/ &amp; .dev/ <tspan style="fill: var(--accent); font-weight:500">(신규)</tspan></text>
+              <text x="16" y="44" class="node-meta">사람 문서 vs AI 로그 분리 · MEMORY/ADR 자리</text>
+            </g>
+
+            <!-- EDGES -->
+            <path class="edge edge-dash" d="M500,122 C 500,150 200,150 200,170" />
+            <path class="edge edge-dash" d="M590,122 C 590,146 590,146 590,170" />
+            <path class="edge edge-dash" d="M680,122 C 680,150 980,150 980,170" />
+
+            <!-- view -> repository (data flow) -->
+            <path class="edge edge-type" d="M340,216 C 400,216 400,216 450,216" />
+            <text x="395" y="208" text-anchor="middle" class="node-meta" style="fill: var(--accent); font-weight: 600">ref.read</text>
+
+            <!-- repository -> util(dio) -->
+            <path class="edge edge-dash" d="M730,216 C 790,216 790,216 840,216" />
+            <text x="790" y="208" text-anchor="middle" class="node-meta" style="fill: var(--text-2)">dioProvider</text>
+
+            <!-- service -> repository -->
+            <path class="edge edge-dash" d="M590,378 C 590,360 590,344 590,344" />
+          </svg>
+        </div>
+      </section>
+
+      <!-- =========== FINDINGS =========== -->
+      <div class="findings">
+        <section class="panel panel-strength">
+          <div class="panel-head">
+            <h3>강점</h3>
+            <span class="count">유지할 것들</span>
+          </div>
+          <ul class="panel-list">
+            <li>
+              <div class="head">
+                <span class="tag tag-rule">Cat E1</span>
+                hallucinated path 0건
+              </div>
+              <div class="note">
+                컨텍스트의 모든 경로가 실제 존재. Meta 표준 "0 hallucinated paths" 충족 —
+                에이전트가 가짜 경로를 따라갈 위험 없음.
+              </div>
+            </li>
+            <li>
+              <div class="head">
+                <span class="tag tag-rule">Cat B1</span>
+                루트 CLAUDE.md 간결·정확 (77줄)
+              </div>
+              <div class="note">
+                개요·기술스택·진입점·중복패턴·컨벤션을 압축. 200줄 미만 "compass" 원칙 준수,
+                중복 패턴·오타까지 명시되어 신뢰도 높음.
+              </div>
+            </li>
+            <li>
+              <div class="head">
+                <span class="tag tag-rule">Cat C(seed)</span>
+                docs/ · .dev/ 분리 체계 도입
+              </div>
+              <div class="note">
+                사람 문서(영속) vs AI 로그(휘발) 분리 완료 — MEMORY.md / ADR를 올릴
+                외부화 store의 토대가 이미 마련됨.
+              </div>
+            </li>
+            <li>
+              <div class="head">
+                <span class="tag tag-rule">Cat E3</span>
+                검증 가능한 build/test 명령 존재
+              </div>
+              <div class="note">
+                <code>flutter analyze</code> · <code>flutter test</code> ·
+                <code>build_runner</code> 가 문서화되어 agent가 변경 후 즉시 검증 가능.
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <section class="panel panel-risk">
+          <div class="panel-head">
+            <h3>최우선 ROI 액션</h3>
+            <span class="count">우선순위 정렬</span>
+          </div>
+          <ul class="panel-list">
+            <li>
+              <div class="head">
+                <span class="tag tag-rule" style="background: var(--green-soft); color: var(--green)">Cat E·F · ✓ 완료</span>
+                검증 게이트 + 경로검증 자동화
+              </div>
+              <div class="note">
+                <strong>E 5→10 · F 6→10(만점).</strong>
+                <code>tool/verify_doc_paths.dart</code>(실행 검증됨) + CI <code>context-check.yml</code> +
+                <code>.claude/hooks</code> + CODEOWNERS + PR template. 깨진 경로를 머지 시점에 차단.
+              </div>
+            </li>
+            <li>
+              <div class="head">
+                <span class="tag tag-rule" style="background: var(--green-soft); color: var(--green)">Cat A · ✓ 완료</span>
+                lib/ 서브시스템에 모듈 컨텍스트 신설
+              </div>
+              <div class="note">
+                <strong>A 0→5 · D·B·C·F 동반 상승.</strong>
+                <code>lib/</code> + <code>repository·service·view</code> + <code>test/</code> 모듈 문서 (Five-Question 구조).
+                <span style="color: var(--amber)">※ android/ios/macos/scripts 미커버는 빌드폴더 오탐 → A 만점 구조상 불가.</span>
+              </div>
+            </li>
+            <li>
+              <div class="head">
+                <span class="tag tag-rule" style="background: var(--green-soft); color: var(--green)">Cat D · ✓ 완료</span>
+                ARCHITECTURE.md + mermaid 의존성 다이어그램
+              </div>
+              <div class="note">
+                <strong>D 0→9.</strong>
+                docs/ARCHITECTURE.md에 레이어/의존성/부트스트랩 mermaid 3종 + CLAUDE.md 데이터흐름 다이어그램.
+                남은 4점은 모듈별 deps 섹션(→ A 액션과 연계).
+              </div>
+            </li>
+            <li>
+              <div class="head">
+                <span class="tag tag-rule" style="background: var(--green-soft); color: var(--green)">Cat C · ✓ 완료</span>
+                docs/adr/로 tribal knowledge 외부화
+              </div>
+              <div class="note">
+                <strong>C 4→8 (Q5 tribal store +4).</strong>
+                ADR 4건: 상태관리·라우팅·에러계약·중복부채. "왜 이렇게 했나"의 결정 근거 외부화.
+                <span style="color: var(--amber)">Q1-Q4 추가 상승은 빌드폴더 module 오탐 분모에 막힘.</span>
+              </div>
+            </li>
+            <li>
+              <div class="head">
+                <span class="tag tag-rule" style="background: var(--green-soft); color: var(--green)">Cat G · ✓ 완료</span>
+                evals/ 디렉터리 + 대표 task pass-rate 측정
+              </div>
+              <div class="note">
+                <strong>G 0→5(만점) · E도 +2.</strong>
+                <code>evals/tasks</code> 3종(화면추가·repo메서드·문서동기화) + <code>agent-results.json</code> 스키마.
+                baseline 측정만 남음 — pass-rate로 컨텍스트 개선 ROI 정량화 가능.
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <footer>
+        tbank_user · AI-Readiness v2 (7 카테고리 / 100점) · scored 2026-06-27 · 총점 63/100 (AI-Assisted) ·
+        *android/ios/macos/scripts 모듈은 빌드·도구 폴더로 채점 오탐
+      </footer>
+    </div>
+  </body>
+</html>

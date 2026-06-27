@@ -46,3 +46,6 @@ app.*.map.json
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# AI work logs / volatile artifacts (not business truth)
+.dev/

@@ -1,0 +1,36 @@
+{
+  "schema": "ai-readiness/agent-eval@1",
+  "description": "이 코드베이스 대표 task에 대한 에이전트 pass-rate 측정. tasks/*.md 기준으로 채점하고 결과를 누적한다.",
+  "model": null,
+  "last_run": null,
+  "context_snapshot": "ai-readiness 56/100 (AI-Fragile) 시점 baseline 미측정",
+  "tasks": [
+    {
+      "id": "add-feature-screen",
+      "spec": "tasks/add-feature-screen.md",
+      "status": "not_run",
+      "result": null,
+      "reviewer": null
+    },
+    {
+      "id": "add-repository-method",
+      "spec": "tasks/add-repository-method.md",
+      "status": "not_run",
+      "result": null,
+      "reviewer": null
+    },
+    {
+      "id": "keep-docs-in-sync",
+      "spec": "tasks/keep-docs-in-sync.md",
+      "status": "not_run",
+      "result": null,
+      "auto_check": "dart run tool/verify_doc_paths.dart"
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "passed": 0,
+    "pass_rate": null,
+    "note": "baseline not yet measured — run tasks against current CLAUDE.md context and record pass/fail"
+  }
+}

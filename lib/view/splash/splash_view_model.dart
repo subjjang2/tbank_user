@@ -4,8 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../common/app_keys.dart';
 import '../base_view_model.dart';
 import 'splash_view_state.dart';
-// User 모델과 AuthService가 필요하다면 import
-import '../../../model/user.dart';
 
 
 final splashViewModelProvider =
