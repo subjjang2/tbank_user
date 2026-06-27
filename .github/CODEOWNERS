@@ -1,0 +1,10 @@
+# Code owners — 자동 리뷰어 지정 (independent critic)
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# 기본: 전체 변경은 메인테이너 리뷰
+*                       @subjjang2
+
+# 컨텍스트/결정 문서는 변경 시 반드시 리뷰 (비즈니스 진실 보호)
+/CLAUDE.md              @subjjang2
+/docs/                  @subjjang2
+/lib/**/CLAUDE.md       @subjjang2

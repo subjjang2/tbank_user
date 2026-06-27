@@ -1,0 +1,32 @@
+# Context / docs validation — CLAUDE.md·ARCHITECTURE·ADR의 경로 참조가
+# 깨지지 않았는지 PR 시점에 검증해 stale reference 머지를 차단한다.
+name: context-check
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+# 최소 권한: 본 워크플로는 체크아웃·검증만 하므로 읽기 전용.
+permissions:
+  contents: read
+
+jobs:
+  verify-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          channel: stable
+
+      - run: flutter pub get
+
+      # 컨텍스트/문서(CLAUDE.md, docs/, ADR)의 경로 참조 검증
+      - name: Verify context & doc paths
+        run: dart run tool/verify_doc_paths.dart
+
+      - name: Analyze
+        run: flutter analyze
