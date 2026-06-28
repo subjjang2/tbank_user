@@ -60,6 +60,20 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
     final state = ref.watch(viewerAccountProvider);
     final viewerPrimaryColor = ref.color.primary;
 
+    // 🔹 [에러 리스너] 에러 발생 시 스낵바 표시 (accessible_view와 동일 패턴)
+    ref.listen(viewerAccountProvider, (previous, next) {
+      if (next.errorMessage.isNotEmpty &&
+          next.errorMessage != previous?.errorMessage) {
+        if (!next.isError) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    });
+
     return Scaffold(
       backgroundColor: ref.color.background,
       body: Column(
@@ -91,14 +105,36 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
   // [Body Builder] 데이터 상태에 따른 분기 처리
   // ---------------------------------------------------------------------------
   Widget _buildBody(ViewerAccountsState state, Color primaryColor) {
-    // 1. 데이터 없음 (빈 화면 표시)
+    // 1. 에러 발생 (데이터 없음) — accessible_view와 동일 패턴
+    if (state.accounts.isEmpty && state.isError) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "데이터를 불러올 수 없습니다.\n${state.errorMessage}",
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () =>
+                  ref.read(viewerAccountProvider.notifier).refresh(),
+              child: const Text("다시 시도"),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // 2. 데이터 없음 (빈 화면 표시)
     if (state.accounts.isEmpty) {
       return _buildEmptyState();
     }
 
     // 2. 데이터 있음 (리스트 표시)
     return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(), // 내용이 적어도 스크롤 가능하게 (Refresh 동작 위해)
+      physics:
+          const AlwaysScrollableScrollPhysics(), // 내용이 적어도 스크롤 가능하게 (Refresh 동작 위해)
       controller: _scrollController,
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
       itemCount: state.accounts.length + (state.hasMore ? 1 : 0), // 로딩 인디케이터 포함
@@ -110,7 +146,10 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
-                child: CircularProgressIndicator(color: primaryColor, strokeWidth: 3),
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                  strokeWidth: 3,
+                ),
               ),
             );
           }
@@ -125,7 +164,11 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
   // ---------------------------------------------------------------------------
   // [Header Widget] 커스텀 그라데이션 헤더
   // ---------------------------------------------------------------------------
-  Widget _buildHeader(WidgetRef ref, ViewerAccountsState state, Color primaryColor) {
+  Widget _buildHeader(
+    WidgetRef ref,
+    ViewerAccountsState state,
+    Color primaryColor,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32),
@@ -135,7 +178,7 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
           end: Alignment.bottomCenter,
           colors: [
             const Color(0xFF3F51B5), // 상단 포인트 컬러
-            primaryColor,            // 테마 메인 컬러
+            primaryColor, // 테마 메인 컬러
           ],
         ),
         borderRadius: const BorderRadius.only(
@@ -163,7 +206,11 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.remove_red_eye_rounded, color: Colors.white, size: 20),
+                    Icon(
+                      Icons.remove_red_eye_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                     SizedBox(width: 8),
                     Text(
                       "조회 권한",
@@ -202,7 +249,9 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
       borderRadius: BorderRadius.circular(16),
       onTap: () async {
         // ✨ 클릭 시 계좌 상태 확인 (ACTIVE 인지 체크)
-        final status = await ref.read(accountStatusProvider(account.accountNumber).future);
+        final status = await ref.read(
+          accountStatusProvider(account.accountNumber).future,
+        );
 
         if (status.toString() == "ACTIVE") {
           // 정상 계좌면 거래 내역 화면으로 이동
@@ -218,7 +267,10 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
         } else {
           // 비정상 계좌면 스낵바 표시
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("관리자 승인이 필요합니다."), backgroundColor: Colors.red),
+            const SnackBar(
+              content: Text("관리자 승인이 필요합니다."),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       },
@@ -248,16 +300,28 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
                     children: [
                       Text(
                         account.accountName,
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black87),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.credit_card, size: 12, color: Colors.grey[500]),
+                          Icon(
+                            Icons.credit_card,
+                            size: 12,
+                            color: Colors.grey[500],
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             account.accountNumber,
-                            style: TextStyle(fontSize: 13, color: Colors.grey[600], letterSpacing: 0.5),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey[600],
+                              letterSpacing: 0.5,
+                            ),
                           ),
                         ],
                       ),
@@ -266,7 +330,10 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
                   // 소유자 표시 (Viewer는 남의 계좌를 보는 것이므로 중요)
                   if (account.owner != null)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: primaryColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
@@ -277,7 +344,11 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
                           const SizedBox(width: 4),
                           Text(
                             account.owner!.name,
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: primaryColor),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: primaryColor,
+                            ),
                           ),
                         ],
                       ),
@@ -293,17 +364,28 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("현재 잔액", style: TextStyle(fontSize: 13, color: Colors.grey[600])),
+                  Text(
+                    "현재 잔액",
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  ),
                   Text.rich(
                     TextSpan(
                       children: [
                         TextSpan(
                           text: formattedBalance,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.black87),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black87,
+                          ),
                         ),
                         TextSpan(
                           text: " cas",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: primaryColor),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: primaryColor,
+                          ),
                         ),
                       ],
                     ),
@@ -331,7 +413,11 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.visibility_off_outlined, size: 48, color: Colors.grey),
+                const Icon(
+                  Icons.visibility_off_outlined,
+                  size: 48,
+                  color: Colors.grey,
+                ),
                 const SizedBox(height: 16),
                 const Text(
                   "조회 가능한 계좌가 없습니다.",
@@ -349,8 +435,13 @@ class _ViewerAccountsViewState extends ConsumerState<ViewerAccountsView> {
                     backgroundColor: ref.color.primary,
                     foregroundColor: Colors.white,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
               ],

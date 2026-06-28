@@ -11,18 +11,26 @@ import 'access_state.dart';
 // =============================================================================
 // autoDispose: 화면을 벗어나면 상태(리스트, 페이지 정보 등)를 초기화합니다.
 // 다시 들어왔을 때 최신 데이터를 로드하기 위함입니다.
-final accessibleAccountsViewModelProvider = NotifierProvider.autoDispose<AccessibleAccountsViewModel, AccessibleAccountsState>(
-    AccessibleAccountsViewModel.new);
+final accessibleAccountsViewModelProvider =
+    NotifierProvider.autoDispose<
+      AccessibleAccountsViewModel,
+      AccessibleAccountsState
+    >(AccessibleAccountsViewModel.new);
 
 // =============================================================================
 // 2. ViewModel 클래스
 // =============================================================================
-class AccessibleAccountsViewModel extends BaseViewModel<AccessibleAccountsState> {
-
+class AccessibleAccountsViewModel
+    extends BaseViewModel<AccessibleAccountsState> {
   @override
   AccessibleAccountsState build() {
     // 초기 상태 반환 (로딩 X, 에러 X)
-    return const AccessibleAccountsState(isBusy: false, isError: false, errorMessage: "", isHeaderRefreshing: false);
+    return const AccessibleAccountsState(
+      isBusy: false,
+      isError: false,
+      errorMessage: "",
+      isHeaderRefreshing: false,
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -52,15 +60,16 @@ class AccessibleAccountsViewModel extends BaseViewModel<AccessibleAccountsState>
         isBusy: false,
         accounts: newItems, // ✨ 기존 데이터를 버리고 새 데이터로 덮어쓰기
         totalCount: result.summary.totalCount,
-        page: 1,            // 페이지 번호 초기화
+        page: 1, // 페이지 번호 초기화
         isHeaderRefreshing: false,
       );
     } catch (e) {
       // 에러 처리
       state = state.copyWith(
-          isHeaderRefreshing: false,
-          isBusy: false,
-          errorMessage: "데이터 로드 실패: $e"
+        isError: true,
+        isHeaderRefreshing: false,
+        isBusy: false,
+        errorMessage: "데이터 로드 실패: $e",
       );
     }
   }
@@ -96,8 +105,9 @@ class AccessibleAccountsViewModel extends BaseViewModel<AccessibleAccountsState>
       );
     } catch (e) {
       state = state.copyWith(
-          isBusy: false,
-          errorMessage: "추가 로드 실패: $e"
+        isError: true,
+        isBusy: false,
+        errorMessage: "추가 로드 실패: $e",
       );
     }
   }

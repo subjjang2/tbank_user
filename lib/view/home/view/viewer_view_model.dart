@@ -11,18 +11,24 @@ import '../../base_view_model.dart';
 // =============================================================================
 // autoDispose: 탭을 이동하거나 화면을 벗어나면 상태를 초기화합니다.
 // (다시 돌아왔을 때 최신 데이터를 새로 로드하기 위함)
-final viewerAccountProvider = NotifierProvider.autoDispose<ViewerAccountsViewModel, ViewerAccountsState>(
-    ViewerAccountsViewModel.new);
+final viewerAccountProvider =
+    NotifierProvider.autoDispose<ViewerAccountsViewModel, ViewerAccountsState>(
+      ViewerAccountsViewModel.new,
+    );
 
 // =============================================================================
 // 2. ViewModel 클래스
 // =============================================================================
 class ViewerAccountsViewModel extends BaseViewModel<ViewerAccountsState> {
-
   @override
   ViewerAccountsState build() {
     // 초기 상태: 로딩 X, 에러 X
-    return const ViewerAccountsState(isBusy: false, isError: false, errorMessage: "", isHeaderRefreshing: false);
+    return const ViewerAccountsState(
+      isBusy: false,
+      isError: false,
+      errorMessage: "",
+      isHeaderRefreshing: false,
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -52,14 +58,15 @@ class ViewerAccountsViewModel extends BaseViewModel<ViewerAccountsState> {
         isBusy: false,
         accounts: newItems, // ✨ 기존 데이터 날리고 새 데이터로 교체
         totalCount: result.summary.totalCount,
-        page: 1,            // 페이지 1로 초기화
+        page: 1, // 페이지 1로 초기화
         isHeaderRefreshing: false,
       );
     } catch (e) {
       state = state.copyWith(
-          isHeaderRefreshing: false,
-          isBusy: false,
-          errorMessage: "데이터 로드 실패: $e"
+        isError: true,
+        isHeaderRefreshing: false,
+        isBusy: false,
+        errorMessage: "데이터 로드 실패: $e",
       );
     }
   }
@@ -95,8 +102,9 @@ class ViewerAccountsViewModel extends BaseViewModel<ViewerAccountsState> {
       );
     } catch (e) {
       state = state.copyWith(
-          isBusy: false,
-          errorMessage: "추가 로드 실패: $e"
+        isError: true,
+        isBusy: false,
+        errorMessage: "추가 로드 실패: $e",
       );
     }
   }
