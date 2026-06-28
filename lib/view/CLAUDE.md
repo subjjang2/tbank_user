@@ -30,6 +30,7 @@ class XViewModel extends BaseViewModel<XViewState> {
 - **ViewModel 반환 타입 혼용:** bool / void / String? 제각각
 - 파일명 오타: `home/my/my_accont_view.dart`, `transaction_history/transation_*`
 - 클래스 접미사 혼용: `LoginView` vs `TransferScreen`
+- `counter/`, `random_counter/`는 예제 코드 (실제 feature 아님)
 
 ## Dependencies
 - 의존: `../repository/`(ref.read), `../provider/`, `../theme/`·`../res/`(UI), `../util/`(route·dialog)

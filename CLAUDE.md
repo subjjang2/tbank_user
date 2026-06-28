@@ -44,7 +44,8 @@ flowchart LR
 
 # 📂 폴더 구조 (lib/)
 - `common/`      전역 키·상수 (navigatorKey, 저장소 키)
-- `model/`       도메인 모델 (User, AccountModel, UserProfileModel — 대부분 수동 클래스)
+- `enum/`        도메인 enum (예: `account_status.dart` — `provider/account_status_provider`가 사용)
+- `model/`       도메인 모델 (User, AccountModel, UserProfileModel, transaction — 대부분 수동 클래스)
 - `provider/`    전역 Riverpod Provider (예: account_status_provider)
 - `repository/`  데이터 계층 (auth/account/transfer/bank/system) — Dio 호출, Exception throw
   - `repository/response/`  API 응답 모델 (일부 freezed)
@@ -55,7 +56,8 @@ flowchart LR
 - `theme/`       테마·재사용 위젯 (button, toast, refresh, foundation, skeleton)
 - `res/`         palette / typo / layout 상수
 - `util/`        route_path, app_config, app_dialog, enums
-  - `util/helper/`  network_helper(dioProvider), api_error_handler, app_exception, formatter
+  - `util/helper/`  network_helper(dioProvider), api_error_handler, app_exception
+    - ⚠️ 포맷터 파일명 비표준: `acoountnumberfomatter.dart`(오타), `IntlHelper.dart`(PascalCase)
 - 구조 요약: **View는 Feature-First, Data는 Layer-First 혼합**
 - **문서 분리 원칙:** `docs/`=사람 문서(사양·결정·룰, 영속·git추적, 비즈니스 진실의 출처) / `.dev/`=AI 작업 로그(휘발성·gitignore). 비즈니스 진실은 항상 `docs/` 기준.
 
@@ -80,7 +82,8 @@ flowchart LR
 
 # 📝 코딩 컨벤션
 - **파일명:** snake_case. feature는 `xxx_view / xxx_view_model / xxx_view_state` 3종 세트
-  - ⚠️ 오타·비표준 잔존: `transation_history`(→transaction), `my_accont_view`(→account), `authority_view.state.dart`(`.` 구분자)
+  - ⚠️ 오타·비표준 잔존: `transaction_history/transation_*` 파일명(→transaction), `my_accont_view`(→account), `authority_view.state.dart`(`.` 구분자)
+  - ⚠️ `view/counter/`, `view/random_counter/`는 예제/데모 코드 — 실제 feature 아님, 패턴 참조 템플릿으로 쓰지 말 것
 - **클래스명:** PascalCase. ⚠️ `View`와 `Screen` 접미사 혼용(LoginView vs TransferScreen)
 - **Provider:** `xxxRepositoryProvider`, `xxxViewModelProvider`, `xxxServiceProvider`, `xxxProvider`(상태)
 - **에러:** 커스텀 `AppException`(util/helper/app_exception.dart), `ApiErrorHandler.parse()`로 Dio 에러 → 한글 메시지 변환 (타임아웃/연결불가/HTTP status별), 404는 일부 정상(null) 처리
