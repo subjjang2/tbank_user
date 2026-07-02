@@ -19,4 +19,4 @@
 ## Consequences
 - (+) 신규 코드의 방향이 명확, 리뷰 기준 생김
 - (+) 기존 코드는 "건드릴 때 통일" 점진 정리 (big-bang 리팩토링 회피)
-- (−) 당분간 혼용 상태 공존 — 파일명 오타(`transation_history`, `my_accont_view`)는 별도 정리 필요
+- (−) 당분간 혼용 상태 공존 — 파일명 오타(`transation_history`, `my_accont_view`)는 `transaction_history`·`my_account_view`로 rename 완료 (2026-07-03)

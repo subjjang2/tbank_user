@@ -7,12 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:tbank_user/res/palette.dart';
 import 'package:tbank_user/service/theme_service.dart';
-import 'package:tbank_user/view/transaction_history/transation_history_view_state.dart';
+import 'package:tbank_user/view/transaction_history/transaction_history_view_state.dart';
 import '../../model/transaction.dart';
 import '../../theme/skeleton_box.dart';
 import '../../util/app_dialog.dart';
 import '../../util/route_path.dart';
-import 'transation_history_view_model.dart';
+import 'transaction_history_view_model.dart';
 import '../../util/helper/IntlHelper.dart';
 
 /// ----------------------------------------------------------------------------

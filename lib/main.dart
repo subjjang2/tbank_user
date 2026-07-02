@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,9 @@ import 'common/app_global.dart';
 @pragma('vm:entry-point') // 네이티브(Android/iOS)에서 Dart 코드를 호출할 수 있도록 진입점 표시
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // 백그라운드에서는 UI를 갱신할 수 없으므로 주로 로컬 알림을 띄우거나 로그를 남깁니다.
-  print("백그라운드 메시지 수신 ID: ${message.messageId}");
+  if (kDebugMode) {
+    print("백그라운드 메시지 수신 ID: ${message.messageId}");
+  }
 }
 
 void main() async {
@@ -63,7 +66,6 @@ class MyApp extends ConsumerWidget {
     // 5. FCM 토큰 상태 감지 (디버깅용)
     // fcmTokenProvider의 값이 바뀌면(토큰 갱신 등) 이 위젯이 다시 빌드됩니다.
     final token = ref.watch(fcmTokenProvider);
-    // 필요하다면 여기서 print(token); 등으로 로그 확인 가능
 
     return MaterialApp(
       // 🔑 전역 키 설정 (Context 없이 스낵바/네비게이션 제어용)

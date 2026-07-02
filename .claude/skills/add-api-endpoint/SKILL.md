@@ -82,7 +82,7 @@ flutter test   # 관련 테스트 있으면
 ```
 
 ## 주의 (프로젝트 고유)
-- `response/` 하위에 오타 폴더 `transation_history`(→transaction) 존재 — 신규는 정확한 철자로.
+- `response/` 하위 신규 폴더는 `transaction` 정확한 철자로 (과거 `transation` 오타 답습 금지).
 - ViewModel 반환 타입(bool/void/String?)과 View 에러 UI(SnackBar/state렌더/AppDialog/Toast)가 혼용 상태다. 새 코드는 **연결하는 feature가 쓰는 기존 방식 하나에 맞춰** 일관되게.
 - 모델 정의가 freezed/수동 class 혼용이지만 **새 응답 모델은 freezed 권장**.
 - API base URL 전환은 `lib/util/app_config.dart`의 `currentEnv`(local/prod).

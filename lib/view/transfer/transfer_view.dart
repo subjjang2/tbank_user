@@ -10,7 +10,7 @@ import '../../repository/response/account_response.dart';
 import '../../theme/hide_keyboard.dart';
 import '../../util/app_dialog.dart';
 import '../../util/helper/IntlHelper.dart';
-import '../../util/helper/acoountnumberfomatter.dart';
+import '../../util/helper/accountnumberformatter.dart';
 import '../../util/route_path.dart';
 import '../account_info/account_info_view_model.dart';
 import '../account_info/account_info_view_state.dart';

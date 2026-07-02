@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../app_config.dart';
+import '../../common/app_keys.dart';
 
 
 
@@ -29,29 +31,36 @@ final dioProvider = Provider<Dio>((ref) {
   // 인터셉터 추가
   dio.interceptors.add(InterceptorsWrapper(
     onRequest: (options, handler) async {
-    print('🚀 [Request] Path: ${options.path}');
+    if (kDebugMode) {
+      print('🚀 [Request] Path: ${options.path}');
+    }
 
     // 2. 스토리지에서 토큰 읽기 시도
     try {
-      final token = await storage.read(key: 'accessToken');
+      final token = await storage.read(key: AppKeys.accessToken);
 
-      // 3. 토큰 상태 확인 (범인 색출)
+      // 3. 토큰 상태 확인
       if (token == null) {
-        print('❌ [Error] 토큰이 NULL입니다! (저장된 토큰 없음 or 읽기 실패)');
+        if (kDebugMode) {
+          print('❌ [Error] 토큰이 NULL입니다! (저장된 토큰 없음 or 읽기 실패)');
+        }
       } else {
-        print('✅ [Success] 토큰 읽기 성공: ${token.substring(0, 10)}...'); // 앞 10자리만 확인
         options.headers['Authorization'] = 'Bearer $token';
       }
     } catch (e) {
-      print('🔥 [Critical] 스토리지 읽기 에러 발생: $e');
+      if (kDebugMode) {
+        print('🔥 [Critical] 스토리지 읽기 에러 발생: $e');
+      }
     }
 
     return handler.next(options);
   },
 
     onError: (DioException e, handler) {
-      // 에러 로깅
-      print("API Error: ${e.response?.statusCode} - ${e.response?.data}");
+      // 에러 로깅 (상태 코드만, 응답 바디는 민감 정보라 제외)
+      if (kDebugMode) {
+        print('API Error: ${e.response?.statusCode}');
+      }
       return handler.next(e);
     },
   ));

@@ -131,7 +131,7 @@ flutter analyze
 ```
 
 ## 주의 (프로젝트 고유)
-- **파일/클래스 네이밍:** snake_case 파일, PascalCase 클래스. 신규는 `View` 접미사로 통일(기존 `Screen` 따라가지 말 것). 오타(`transation_`, `accont_`) 답습 금지.
+- **파일/클래스 네이밍:** snake_case 파일, PascalCase 클래스. 신규는 `View` 접미사로 통일(기존 `Screen` 따라가지 말 것). 과거 오타(`transation_`, `accont_`)를 신규 파일에서 답습 금지 — 정확한 철자 사용.
 - **에러 UI가 4가지 혼용**(SnackBar/state 직접 렌더/AppDialog/Toast). 새 화면은 한 방식을 골라 일관되게.
 - State 초기화도 `const` 생성자 직접 호출 vs `.initial()` 혼용 — 신규는 `.initial()` 권장.
 - freezed State를 쓰지 않는다(State는 수동 class). 모델/응답에만 freezed.

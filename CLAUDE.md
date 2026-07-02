@@ -23,6 +23,9 @@ flowchart LR
 - **실행:** `flutter run`
 - **분석/린트:** `flutter analyze` (flutter_lints 기본 규칙)
 - **테스트:** `flutter test`
+  - `test/`는 `lib/` 구조를 미러링 (`test/repository/`, `test/view/<feature>/`)
+  - Repository 테스트는 `test/repository/mock_dio.dart` 공용 Mock 사용
+  - 신규 화면/API 추가 시 매칭 ViewModel/Repository 테스트도 함께 추가하는 것이 표준
 
 # 🧱 기술 스택
 - **상태관리:** flutter_riverpod ^2.5.1 (NotifierProvider.autoDispose, FutureProvider.family, StateProvider)
@@ -57,7 +60,7 @@ flowchart LR
 - `res/`         palette / typo / layout 상수
 - `util/`        route_path, app_config, app_dialog, enums
   - `util/helper/`  network_helper(dioProvider), api_error_handler, app_exception
-    - ⚠️ 포맷터 파일명 비표준: `acoountnumberfomatter.dart`(오타), `IntlHelper.dart`(PascalCase)
+    - ⚠️ 포맷터 파일명 비표준: `accountnumberformatter.dart`, `IntlHelper.dart`(PascalCase)
 - 구조 요약: **View는 Feature-First, Data는 Layer-First 혼합**
 - **문서 분리 원칙:** `docs/`=사람 문서(사양·결정·룰, 영속·git추적, 비즈니스 진실의 출처) / `.dev/`=AI 작업 로그(휘발성·gitignore). 비즈니스 진실은 항상 `docs/` 기준.
 
@@ -74,7 +77,7 @@ flowchart LR
 3. **ViewModel 에러 처리 혼용** — State저장+bool반환 / State저장만 / String?반환 4가지 패턴
    - 예: `login_view_model.dart`(bool), `account_info_view_model.dart`(void), `register_view_model.dart`(String?)
 4. **View 에러 UI 혼용**
-   - `ref.listen`+SnackBar: `view/home/my/my_accont_view.dart`
+   - `ref.listen`+SnackBar: `view/home/my/my_account_view.dart`
    - state 직접 렌더: `view/login/login_view.dart`
    - AppDialog: `util/app_dialog.dart` / Toast: `theme/toast/toast.dart`
 5. **네비게이션 혼용** — `Navigator.pushNamed`(View) vs `navigatorKey.currentState`(fcm_service) vs onGenerateRoute
@@ -82,7 +85,7 @@ flowchart LR
 
 # 📝 코딩 컨벤션
 - **파일명:** snake_case. feature는 `xxx_view / xxx_view_model / xxx_view_state` 3종 세트
-  - ⚠️ 오타·비표준 잔존: `transaction_history/transation_*` 파일명(→transaction), `my_accont_view`(→account), `authority_view.state.dart`(`.` 구분자)
+  - ⚠️ 비표준 잔존: `authority_view.state.dart`(`.` 구분자)
   - ⚠️ `view/counter/`, `view/random_counter/`는 예제/데모 코드 — 실제 feature 아님, 패턴 참조 템플릿으로 쓰지 말 것
 - **클래스명:** PascalCase. ⚠️ `View`와 `Screen` 접미사 혼용(LoginView vs TransferScreen)
 - **Provider:** `xxxRepositoryProvider`, `xxxViewModelProvider`, `xxxServiceProvider`, `xxxProvider`(상태)

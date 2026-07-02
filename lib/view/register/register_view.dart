@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tbank_user/service/theme_service.dart';
@@ -228,8 +229,10 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                             }
                           }
                         } catch (e, stackTrace) {
-                          print("🔥 에러 발생: $e");
-                          print("📍 위치: $stackTrace");
+                          if (kDebugMode) {
+                            print("🔥 에러 발생: $e");
+                            print("📍 위치: $stackTrace");
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(

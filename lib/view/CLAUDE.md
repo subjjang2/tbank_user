@@ -28,9 +28,7 @@ class XViewModel extends BaseViewModel<XViewState> {
 ## Non-obvious / Gotchas
 - **에러 UI 4가지 혼용(중복 패턴):** `ref.listen`+SnackBar / `state.isError` 직접 렌더 / `AppDialog`(util) / `Toast`(theme). 새 화면은 기존 feature 한 곳을 골라 일관되게
 - **ViewModel 반환 타입 혼용:** bool / void / String? 제각각
-- 파일명 오타: `home/my/my_accont_view.dart`, `transaction_history/transation_*`
 - 클래스 접미사 혼용: `LoginView` vs `TransferScreen`
-- `counter/`, `random_counter/`는 예제 코드 (실제 feature 아님)
 
 ## Dependencies
 - 의존: `../repository/`(ref.read), `../provider/`, `../theme/`·`../res/`(UI), `../util/`(route·dialog)

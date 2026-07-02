@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:tbank_user/view/transaction_history/transation_history_view_state.dart';
+import 'package:tbank_user/view/transaction_history/transaction_history_view_state.dart';
 
 import '../../repository/transfer_repository.dart';
 import '../../util/app_config.dart';
@@ -123,7 +124,9 @@ class TransactionViewModel extends AutoDisposeFamilyNotifier<TransactionViewStat
 
     } on AppException catch (e) {
       // 5. 비즈니스 로직 에러 처리 (예: 계좌 없음, 권한 없음)
-      print("AppException 발생: ${e.message}");
+      if (kDebugMode) {
+        print("AppException 발생: ${e.message}");
+      }
       state = state.copyWith(
         isBusy: false,
         isError: true,

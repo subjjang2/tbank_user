@@ -6,7 +6,7 @@ import '../view/home/home_view.dart';
 import '../view/login/login_view.dart';
 import '../view/register/register_view.dart';
 import '../view/splash/splash_view.dart';
-import '../view/transaction_history/transation_history_view.dart';
+import '../view/transaction_history/transaction_history_view.dart';
 import '../view/transfer/transfer_view.dart';
 
 /// ----------------------------------------------------------------------------

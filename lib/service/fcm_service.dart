@@ -1,4 +1,5 @@
 import 'dart:convert'; // jsonEncode, jsonDecode 사용을 위해 필요
+import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'; // 패키지 추가
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +45,9 @@ class FcmService {
     // --- [3. 토큰 처리] ---
     final token = await messaging.getToken();
     _ref.read(fcmTokenProvider.notifier).state = token;
-    print("FCM Token: $token");
+    if (kDebugMode) {
+      print("FCM Token: $token");
+    }
 
     messaging.onTokenRefresh.listen((newToken) {
       _ref.read(fcmTokenProvider.notifier).state = newToken;
@@ -58,7 +61,9 @@ class FcmService {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
 
-      print('Foreground Message: ${notification?.title}');
+      if (kDebugMode) {
+        print('Foreground Message: ${notification?.title}');
+      }
 
       if (notification != null && android != null) {
         // 스낵바 대신 로컬 알림 띄우기
@@ -111,7 +116,9 @@ class FcmService {
             final Map<String, dynamic> data = jsonDecode(details.payload!);
             _handleData(data);
           } catch (e) {
-            print('Payload 파싱 에러: $e');
+            if (kDebugMode) {
+              print('Payload 파싱 에러: $e');
+            }
           }
         }
       },
@@ -143,7 +150,9 @@ class FcmService {
 
   // 실제 네비게이션 로직 (RemoteMessage와 LocalNotification 양쪽에서 사용)
   void _handleData(Map<String, dynamic> data) {
-    print('알림 클릭 로직 실행: $data');
+    if (kDebugMode) {
+      print('알림 클릭 로직 실행: $data');
+    }
     String? route = data['route'];
 
     if (route != null) {

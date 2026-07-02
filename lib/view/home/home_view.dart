@@ -5,7 +5,7 @@ import 'package:tbank_user/view/home/view/viewer_view.dart';
 import '../../res/palette.dart';
 import '../create_account/create_account_view.dart';
 import 'all/accessible_view.dart';
-import 'my/my_accont_view.dart';
+import 'my/my_account_view.dart';
 
 /// ----------------------------------------------------------------------------
 /// [HomeView]

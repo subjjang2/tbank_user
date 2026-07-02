@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tbank_user/repository/response/account_search/account_searchtype_response.dart';
-import 'package:tbank_user/repository/response/transation_history/transation_history_response.dart';
+import 'package:tbank_user/repository/response/transaction_history/transaction_history_response.dart';
 import 'package:tbank_user/repository/system_repository.dart';
 import 'package:tbank_user/repository/transfer_repository.dart';
 import 'package:tbank_user/util/helper/app_exception.dart';
